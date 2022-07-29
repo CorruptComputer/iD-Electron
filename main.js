@@ -2,7 +2,8 @@
 const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron');
 const path = require('path');
 
-const index = `file://${__dirname}/dist/index.html`
+const index = `file://${__dirname}/dist/index.html`;
+const land = `file://${__dirname}/dist/land.html`;
 
 let mainWindow;
 
@@ -28,19 +29,15 @@ if (!gotTheLock) {
 
             mainWindow.focus();
 
-            let hasCommand = false;
-            let command = '';
-
-            commandLine.forEach((value, index, array) => {
+            commandLine.forEach((value) => {
                 if (value.startsWith('id-electron://open')) {
-                    hasCommand = true;
-                    command = value.replace('id-electron://open', '');
+                    let command = value.replace('id-electron://open', '');
+                    mainWindow.loadURL(index + command);
+                } else if (value.startsWith('id-electron://auth')) {
+                    let command = value.replace('id-electron://auth', '');
+                    mainWindow.loadURL(land + command);
                 }
             });
-
-            if (hasCommand) {
-                mainWindow.loadURL(index + command);
-            }
         }
     });
 
@@ -61,11 +58,27 @@ function createWindow() {
     })
 
     mainWindow.loadURL(index);
+    
     mainWindow.webContents.openDevTools();
-    mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-        shell.openExternal(url);
 
-        return { action: 'deny' }
+    mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+        if (url === 'about:blank') {
+            return {
+                action: 'allow',
+                overrideBrowserWindowOptions: {
+                    frame: true,
+                    autoHideMenuBar: true,
+                    fullscreenable: false,
+                    backgroundColor: 'black',
+                    webPreferences: {
+                        preload: path.join(__dirname, 'preload.js'),
+                    }
+                }
+            }
+        } else {
+            shell.openExternal(url);
+            return { action: 'deny' }
+        }
     });
 }
 

@@ -62,9 +62,10 @@ function createWindow() {
 
     mainWindow.loadURL(index);
     mainWindow.webContents.openDevTools();
-    mainWindow.webContents.setWindowOpenHandler(function (e, url) {
-        e.preventDefault();
+    mainWindow.webContents.setWindowOpenHandler(({ url }) => {
         shell.openExternal(url);
+
+        return { action: 'deny' }
     });
 }
 

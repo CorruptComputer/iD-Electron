@@ -15,7 +15,9 @@ jobs:
         with:
           node-version: 16
       - name: Build
-        run: npm run make
+        run: |
+        npm install
+        npm run make
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
@@ -33,7 +35,9 @@ jobs:
         with:
           node-version: 16
       - name: Build
-        run: npm run make:windows
+        run: |
+        npm install
+        npm run make:windows
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
@@ -48,7 +52,9 @@ jobs:
         with:
           node-version: 16
       - name: Build
-        run: npm run make
+        run: |
+        npm install
+        npm run make
       - name: Release
         uses: softprops/action-gh-release@v1
         with:

@@ -4,10 +4,14 @@
     "description": "iD editor running locally via Electron",
     "main": "main.js",
     "scripts": {
-      "start": "electron ."
+        "start": "electron .",
+        "build:all": "npm run build:win32 && npm run build:darwin && npm run build:linux",
+        "build:win32": "rm -rf iD-win32-x64 && npx electron-packager . iD --platform=win32 --arch=x64",
+        "build:darwin": "rm -rf iD-darwin-x64 && npx electron-packager . iD --platform=darwin --arch=x64",
+        "build:linux": "rm -rf iD-linux-x64 && npx electron-packager . iD --platform=linux --arch=x64"
     },
     "devDependencies": {
-      "electron": "^19.0.9"
+        "electron": "^19.0.9",
+        "electron-packager": "^15.5.1"
     }
-  }
-  
+}

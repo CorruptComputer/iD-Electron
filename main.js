@@ -2,6 +2,8 @@
 const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron');
 const path = require('path');
 
+const index = `file://${__dirname}/dist/index.html`
+
 let mainWindow;
 
 if (process.defaultApp) {
@@ -25,19 +27,26 @@ if (!gotTheLock) {
             }
 
             mainWindow.focus();
+
+            let hasCommand = false;
+            let command;
+
+            commandLine.forEach((value, index, array) => {
+                if (value.startsWith('id-electron://open')) {
+                    hasCommand = true;
+                    command = value.replace('id-electron://open', '');
+                }
+            });
+
+            if (hasCommand) {
+                mainWindow.loadURL(index + command);
+            }
         }
     });
 
     // Create mainWindow, load the rest of the app, etc...
     app.whenReady().then(() => {
         createWindow();
-    });
-
-    app.on('open-url', (event, url) => {
-        dialog.showErrorBox('Arrived from: ' + url);
-
-        // TODO: fix this to actually handle the URL properly
-        mainWindow.loadFile('dist/index.html');
     });
 }
 
@@ -51,7 +60,7 @@ function createWindow() {
         }
     })
 
-    mainWindow.loadFile('dist/index.html');
+    mainWindow.loadURL(index);
     mainWindow.webContents.openDevTools();
     mainWindow.webContents.setWindowOpenHandler(function (e, url) {
         e.preventDefault();

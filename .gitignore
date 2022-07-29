@@ -1,5 +1,3 @@
 node_modules/
 
-iD-win32-x64/
-iD-darwin-x64/
-iD-linux-x64/
+out/

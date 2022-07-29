@@ -1,21 +1,21 @@
 {
   "name": "id-electron",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "iD editor running locally via Electron",
   "main": "main.js",
   "license": "ISC License",
   "scripts": {
-    "build:id": "npm run build:clean && bash build-id-dist.sh",
-    "build:clean": "rm -rf out/ && rm -rf dist/",
+    "build:id": "bash build-id-dist.sh",
+    "build:id:windows": "powershell build-id-dist.ps1",
     "start": "npm run build:id && electron-forge start",
     "package": "npm run build:id && electron-forge package",
-    "make": "npm run build:id && electron-forge make"
+    "make": "npm run build:id && electron-forge make",
+    "make:windows": "npm run build:id:windows && electron-forge make"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.65",
     "@electron-forge/maker-deb": "^6.0.0-beta.65",
     "@electron-forge/maker-rpm": "^6.0.0-beta.65",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.65",
     "@electron-forge/maker-zip": "^6.0.0-beta.65",
     "electron": "^19.0.9"
   },
@@ -39,15 +39,11 @@
       },
       "makers": [
         {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "id_electron"
-          }
-        },
-        {
           "name": "@electron-forge/maker-zip",
           "platforms": [
-            "darwin"
+            "win32",
+            "darwin",
+            "linux"
           ]
         },
         {

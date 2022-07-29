@@ -1,0 +1,13 @@
+{
+    "name": "id-electron",
+    "version": "1.0.0",
+    "description": "iD editor running locally via Electron",
+    "main": "main.js",
+    "scripts": {
+      "start": "electron ."
+    },
+    "devDependencies": {
+      "electron": "^19.0.9"
+    }
+  }
+  

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>iD</title>
+    <link rel='stylesheet' href='iD.css'>
+    <link rel='icon' type='image/png' href='data:image/png;base64,iVBORw0KGgo='>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'/>
+    <meta name='apple-mobile-web-app-capable' content='yes'/>
+    <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'/>
+    <style type='text/css'>
+      /* apply document-level styling to standalone iD only */
+      html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        /* disable elastic page bounce upon scroll */
+        overflow: hidden;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id='id-container'></div>
+
+    <script>
+      var container = document.getElementById('id-container');
+      var newScript = document.createElement('script');
+      newScript.type = 'text/javascript';
+      newScript.onload = checkScript;
+      newScript.onerror = checkScript;
+      newScript.src = 'iD.min.js';
+
+      document.getElementsByTagName('head')[0].appendChild(newScript);
+
+
+      function checkScript() {
+        if (typeof iD === 'undefined' || !iD.utilDetect().support) {
+          container.innerHTML = 'Sorry, your browser is not currently supported. Please use another <a href="https://github.com/openstreetmap/iD#basics">browser</a> or <a href="https://wiki.openstreetmap.org/wiki/Editors">editor</a> to contribute to the map.';
+          container.style.padding = '20px';
+
+        } else {
+          var context = iD.coreContext()
+            .assetPath('')
+            .apiConnections([
+              {
+                url: 'https://www.openstreetmap.org',
+                client_id: '0tmNTmd0Jo1dQp4AUmMBLtGiD9YpMuXzHefitcuVStc',
+                client_secret: 'BTlNrNxIPitHdL4sP2clHw5KLoee9aKkA7dQbc0Bj7Q'
+              }, {
+                url: 'https://api06.dev.openstreetmap.org',
+                client_id: 'Ee1wWJ6UlpERbF6BfTNOpwn0R8k_06mvMXdDUkeHMgw',
+                client_secret: 'OnfWFC-JkZNHyYdr_viNn_h_RTZXRslKcUxllOXqf5g'
+              }
+            ])
+            .containerNode(container);
+          context.init();
+
+          // disable boundaries (unless we have an explicit disable_features list)
+          var q = iD.utilStringQs(window.location.hash);
+          if (!q.hasOwnProperty('disable_features')) {
+            context.features().disable('boundaries');
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -5,9 +5,11 @@
   "main": "main.js",
   "license": "ISC License",
   "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "build:id": "npm run build:clean && bash build-id-dist.sh",
+    "build:clean": "rm -rf out/ && rm -rf dist/",
+    "start": "npm run build:id && electron-forge start",
+    "package": "npm run build:id && electron-forge package",
+    "make": "npm run build:id && electron-forge make"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.65",
@@ -30,6 +32,9 @@
               "id-electron"
             ]
           }
+        ],
+        "ignore": [
+          "build-id-dist.sh"
         ]
       },
       "makers": [

@@ -6,7 +6,7 @@
   "license": "ISC License",
   "scripts": {
     "build:id": "bash build-id-dist.sh",
-    "build:id:windows": "powershell build-id-dist.ps1",
+    "build:id:windows": "powershell -ExecutionPolicy Unrestricted -File build-id-dist.ps1",
     "start": "npm run build:id && electron-forge start",
     "package": "npm run build:id && electron-forge package",
     "make": "npm run build:id && electron-forge make",
@@ -34,7 +34,14 @@
           }
         ],
         "ignore": [
-          "build-id-dist.sh"
+          "build-id-dist.sh",
+          "build-id-dist.ps1",
+          ".gitignore",
+          "README.md",
+          "[.]github$",
+          "[.]github\/.*",
+          "[.]github\\.*",
+          "iD\/.*"
         ]
       },
       "makers": [

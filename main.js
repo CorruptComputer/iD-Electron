@@ -29,7 +29,7 @@ if (!gotTheLock) {
             mainWindow.focus();
 
             let hasCommand = false;
-            let command;
+            let command = '';
 
             commandLine.forEach((value, index, array) => {
                 if (value.startsWith('id-electron://open')) {
